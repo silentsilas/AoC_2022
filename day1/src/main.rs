@@ -18,7 +18,6 @@ fn main() {
 }
 
 pub fn read_file(file_path: &String) -> Result<String, io::Error> {
-
     let file_result = File::open(file_path);
 
     let mut file = match file_result {
