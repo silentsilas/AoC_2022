@@ -5,8 +5,12 @@ fn main() {
     let file_path = &args[1];
     match read_file(file_path) {
         Ok(contents) => {
-            let part_1_result = solve_part_1(contents);
-            println!("Total score: {}", part_1_result);
+            let part_2_contents = contents.clone();
+            let part_1_result = solve(contents, "Move");
+            println!("Part 1 total score: {}", part_1_result);
+
+            let part_2_result = solve(part_2_contents, "Outcome");
+            println!("Part 2 total score: {}", part_2_result);
         },
         Err(e) => eprintln!("{}", e)
     }
@@ -28,7 +32,7 @@ pub fn read_file(file_path: &String) -> Result<String, io::Error> {
     }
 }
 
-pub fn solve_part_1(file_contents: String) -> i32 {
+pub fn solve(file_contents: String, strategy: &str) -> i32 {
     let rounds: Vec<&str> = file_contents.split('\n').collect();
     let mut total_score = 0;
     for round in rounds {
@@ -39,17 +43,61 @@ pub fn solve_part_1(file_contents: String) -> i32 {
             "C" => "Scissors",
             _ => continue
         };
-        let player_move = match moves[1] {
-            "X" => ("Rock", 1),
-            "Y" => ("Paper", 2),
-            "Z" => ("Scissors", 3),
-            _ => continue
-        };
+        let player_move = decipher_player_code(opponent_move, moves[1], strategy);
 
         let score = calculate_round_score(opponent_move, player_move);
         total_score += score;
     }
     total_score
+}
+
+fn decipher_player_code<'a>(opponent_move: &'a str, player_code: &'a str, strategy: &'a str) -> (&'a str, i32) {
+    match strategy {
+        "Move" => decipher_player_move(player_code),
+        "Outcome" => decipher_player_outcome(opponent_move, player_code),
+        _ => ("", 0)
+    }
+}
+
+fn decipher_player_move(player_code: &str) -> (&str, i32) {
+    match player_code {
+        "X" => ("Rock", 1),
+        "Y" => ("Paper", 2),
+        "Z" => ("Scissors", 3),
+        _ => ("", 0)
+    }
+}
+
+fn decipher_player_outcome<'a>(opponent_move: &'a str, player_code: &'a str) -> (&'a str, i32) {
+    let result: (&str, i32) = match opponent_move {
+        "Rock" => {
+            match player_code {
+                "X" => ("Scissors", 3),
+                "Y" => ("Rock", 1),
+                "Z" => ("Paper", 2),
+                _ => ("", 0)
+            }
+        },
+        "Paper" => {
+            match player_code {
+                "X" => ("Rock", 1),
+                "Y" => ("Paper", 2),
+                "Z" => ("Scissors", 3),
+                _ => ("", 0)
+            }
+        },
+        "Scissors" => {
+            match player_code {
+                "X" => ("Paper", 2),
+                "Y" => ("Scissors", 3),
+                "Z" => ("Rock", 1),
+                _ => ("", 0)
+            }
+        },
+        _ => ("", 0)
+    };
+
+    result
 }
 
 pub fn calculate_round_score(opponent_move: &str, player_move: (&str, i32)) -> i32 {
@@ -91,7 +139,16 @@ mod tests {
         let dir = env!("CARGO_MANIFEST_DIR").to_string();
         let path = dir + "/assets/test.txt";
         let file = read_file(&path).unwrap();
-        let result = solve_part_1(file);
+        let result = solve(file, "Move");
         assert_eq!(result, 74);
+    }
+
+    #[test]
+    fn solves_part_2() {
+        let dir = env!("CARGO_MANIFEST_DIR").to_string();
+        let path = dir + "/assets/test.txt";
+        let file = read_file(&path).unwrap();
+        let result = solve(file, "Outcome");
+        assert_eq!(result, 57);
     }
 }
