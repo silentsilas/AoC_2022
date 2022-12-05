@@ -47,7 +47,6 @@ pub fn solve(contents: &str, strategy: Strategy) -> String {
                 }
             }
         };
-        
     }
 
     let mut result = "".to_owned();
