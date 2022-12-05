@@ -12,6 +12,7 @@ pub enum Strategy {
     Part1,
     Part2
 }
+
 fn main() {
     let args: Vec<String> = env::args().collect();
     let file_path = &args[1];
@@ -59,20 +60,20 @@ pub fn solve(contents: &str, strategy: Strategy) -> String {
 
 fn parse_crates_and_instructions(contents: &str) -> (Vec<VecDeque<char>>, Vec<Instruction>) {
     let (crates, instructions) = contents.split("\n\n").into_iter().collect_tuple::<(&str, &str)>().unwrap();
-    let crate_placements = parse_crates(crates);
+    let crate_stacks = parse_crates(crates);
     let instructions = parse_instructions(instructions);
 
-    (crate_placements, instructions)
+    (crate_stacks, instructions)
 }
 
 fn parse_crates(crates: &str) -> Vec<VecDeque<char>> {
     let rows: Vec<&str> = crates.lines().collect::<Vec<&str>>();
     let width: usize = get_width(rows.clone().first().unwrap());
-    let mut crate_placements: Vec<VecDeque<char>> = vec![];
+    let mut crate_stacks: Vec<VecDeque<char>> = vec![];
 
     for _ in 0..width {
         let stack = VecDeque::new();
-        crate_placements.push(stack);
+        crate_stacks.push(stack);
     }
 
     for row in rows {
@@ -81,7 +82,7 @@ fn parse_crates(crates: &str) -> Vec<VecDeque<char>> {
         }
 
         for (col, ch) in row.chars().skip(1).step_by(4).enumerate() {
-            let stack = &mut crate_placements[col];
+            let stack = &mut crate_stacks[col];
 
             if ch != ' ' {
                 stack.push_front(ch);
@@ -89,7 +90,7 @@ fn parse_crates(crates: &str) -> Vec<VecDeque<char>> {
         }
     }
 
-    crate_placements
+    crate_stacks
 }
 
 fn parse_instructions(instructions: &str) -> Vec<Instruction> {
