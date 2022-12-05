@@ -1,6 +1,6 @@
 # Advent of Code 2022 Solutions
 
-Here lies my attempts at solving the daily code challenges in AoC using the Rust programming language. I haven't touched low-level languages since college, so any feedback would be appreciated. Otherwise feel free to use it as a reference for your own solutions.
+Here lies my attempts at solving the daily code challenges in [Advent of Code](https://adventofcode.com/) using the Rust programming language. I haven't touched low-level languages since college, so any feedback would be appreciated. Otherwise feel free to use it as a reference for your own solutions.
 
 ### Installation
 
