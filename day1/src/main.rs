@@ -46,11 +46,11 @@ pub fn get_elf_calories(file_contents: String) -> Vec<i32> {
     elves
 }
 
-pub fn solve_part_1(elves: &Vec<i32>) -> i32 {
+pub fn solve_part_1(elves: &[i32]) -> i32 {
     elves[0]
 }
 
-pub fn solve_part_2(elves: &Vec<i32>) -> i32 {
+pub fn solve_part_2(elves: &[i32]) -> i32 {
     let result: i32 = elves[0..3].iter().sum();
 
     result
