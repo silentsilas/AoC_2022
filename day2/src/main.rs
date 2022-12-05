@@ -5,11 +5,10 @@ fn main() {
     let file_path = &args[1];
     match read_file(file_path) {
         Ok(contents) => {
-            let part_2_contents = contents.clone();
-            let part_1_result = solve(contents, "Move");
+            let part_1_result = solve(&contents, "Move");
             println!("Part 1 total score: {}", part_1_result);
 
-            let part_2_result = solve(part_2_contents, "Outcome");
+            let part_2_result = solve(&contents, "Outcome");
             println!("Part 2 total score: {}", part_2_result);
         },
         Err(e) => eprintln!("{}", e)
@@ -32,7 +31,7 @@ pub fn read_file(file_path: &String) -> Result<String, io::Error> {
     }
 }
 
-pub fn solve(file_contents: String, strategy: &str) -> i32 {
+pub fn solve(file_contents: &str, strategy: &str) -> i32 {
     let rounds: Vec<&str> = file_contents.split('\n').collect();
     let mut total_score = 0;
     for round in rounds {
@@ -139,7 +138,7 @@ mod tests {
         let dir = env!("CARGO_MANIFEST_DIR").to_string();
         let path = dir + "/assets/test.txt";
         let file = read_file(&path).unwrap();
-        let result = solve(file, "Move");
+        let result = solve(&file, "Move");
         assert_eq!(result, 74);
     }
 
@@ -148,7 +147,7 @@ mod tests {
         let dir = env!("CARGO_MANIFEST_DIR").to_string();
         let path = dir + "/assets/test.txt";
         let file = read_file(&path).unwrap();
-        let result = solve(file, "Outcome");
+        let result = solve(&file, "Outcome");
         assert_eq!(result, 57);
     }
 }

@@ -6,9 +6,8 @@ fn main() {
     match read_file(file_path) {
         Ok(contents) => {
             let elves = get_elf_calories(contents);
-            let part_two_elves = elves.clone();
-            let part_one_results = solve_part_1(elves);
-            let part_two_results = solve_part_2(part_two_elves);
+            let part_one_results = solve_part_1(&elves);
+            let part_two_results = solve_part_2(&elves);
 
             println!("Elf with most calories: {}", part_one_results);
             println!("Sum of three elves with most calories: {}", part_two_results);
@@ -47,11 +46,11 @@ pub fn get_elf_calories(file_contents: String) -> Vec<i32> {
     elves
 }
 
-pub fn solve_part_1(elves: Vec<i32>) -> i32 {
+pub fn solve_part_1(elves: &Vec<i32>) -> i32 {
     elves[0]
 }
 
-pub fn solve_part_2(elves: Vec<i32>) -> i32 {
+pub fn solve_part_2(elves: &Vec<i32>) -> i32 {
     let result: i32 = elves[0..3].iter().sum();
 
     result
@@ -67,7 +66,7 @@ mod tests {
         let path = dir + "/assets/test.txt";
         let file = read_file(&path).unwrap();
         let elves = get_elf_calories(file);
-        let result = solve_part_1(elves);
+        let result = solve_part_1(&elves);
         assert_eq!(result, 120);
     }
 
@@ -77,7 +76,7 @@ mod tests {
         let path = dir + "/assets/test.txt";
         let file = read_file(&path).unwrap();
         let elves = get_elf_calories(file);
-        let result = solve_part_2(elves);
+        let result = solve_part_2(&elves);
         assert_eq!(result, 250);
     }
 }
